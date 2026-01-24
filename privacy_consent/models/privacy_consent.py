@@ -130,16 +130,13 @@ class PrivacyConsent(models.Model):
         self._run_action()
         return result
 
-    def _message_get_suggested_recipients(self):
-        result = super()._message_get_suggested_recipients()
-        reason = self._fields["partner_id"].string
-        for one in self:
-            one._message_add_suggested_recipient(
-                result,
-                partner=one.partner_id,
-                reason=reason,
-            )
-        return result
+    def _message_add_suggested_recipients(self, force_primary_email=False):
+        # Odoo 19: Complete API change - returns dict with 'partners' and 'email_to_lst'
+        suggested = super()._message_add_suggested_recipients(force_primary_email=force_primary_email)
+        for record in self:
+            if record.partner_id:
+                suggested[record.id]['partners'] |= record.partner_id
+        return suggested
 
     def action_manual_ask(self):
         """Let user manually ask for consent."""

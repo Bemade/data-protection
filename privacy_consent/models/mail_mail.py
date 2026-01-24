@@ -9,31 +9,37 @@ class MailMail(models.Model):
     _inherit = "mail.mail"
 
     def _postprocess_sent_message(
-        self, success_pids, failure_reason=False, failure_type=None
+        self, success_pids, success_emails, failure_reason=False, failure_type=None
     ):
-        """Write consent status after sending message."""
+        """Write consent status after sending message.
+        
+        Odoo 19: Added success_emails parameter to signature.
+        """
         # Know if mail was successfully sent to a privacy consent
         res_ids = []
         for mail in self:
             if (
                 mail.mail_message_id.model == "privacy.consent"
                 and mail.state == "sent"
-                and success_pids
+                and (success_pids or success_emails)
                 and not failure_reason
                 and not failure_type
             ):
                 res_ids.append(mail.mail_message_id.res_id)
         if res_ids:
-            consents = self.env["privacy.consent"].search(
-                [
-                    ("id", "in", res_ids),
-                    ("state", "=", "draft"),
-                    ("partner_id", "in", [par.id for par in success_pids]),
-                ]
-            )
+            # Build list of successful partner IDs
+            partner_ids = [par.id for par in success_pids] if success_pids else []
+            search_domain = [
+                ("id", "in", res_ids),
+                ("state", "=", "draft"),
+            ]
+            if partner_ids:
+                search_domain.append(("partner_id", "in", partner_ids))
+            consents = self.env["privacy.consent"].search(search_domain)
             consents.write({"state": "sent"})
         return super()._postprocess_sent_message(
             success_pids=success_pids,
+            success_emails=success_emails,
             failure_reason=failure_reason,
             failure_type=failure_type,
         )
