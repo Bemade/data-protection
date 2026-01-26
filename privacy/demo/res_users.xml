@@ -2,7 +2,9 @@
 <!-- Copyright 2018 Tecnativa - Jairo Llopis
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <data>
-    <record id="base.user_demo" model="res.users">
-        <field name="groups_id" eval="[(4, ref('group_data_protection_user'))]" />
+    <!-- Note: In Odoo 19+, groups_id is not directly writable on res.users.
+         Use implied_ids on the group instead, or assign via res.groups. -->
+    <record id="base.group_user" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_data_protection_user'))]" />
     </record>
 </data>

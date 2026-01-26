@@ -5,6 +5,7 @@ import hashlib
 import hmac
 
 from odoo import api, fields, models
+from odoo.orm.table_objects import Constraint
 
 
 class PrivacyConsent(models.Model):
@@ -12,13 +13,12 @@ class PrivacyConsent(models.Model):
     _description = "Consent of data processing"
     _inherit = "mail.thread"
     _rec_name = "partner_id"
-    _sql_constraints = [
-        (
-            "unique_partner_activity",
+    _table_objects = {
+        "unique_partner_activity": Constraint(
             "UNIQUE(partner_id, activity_id)",
             "Duplicated partner in this data processing activity",
         ),
-    ]
+    }
 
     active = fields.Boolean(
         default=True,
