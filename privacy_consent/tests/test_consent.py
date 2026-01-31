@@ -72,6 +72,15 @@ class ActivityCase(odoo.tests.HttpCase):
                 "server_action_id": cls.sync_blacklist.id,
             }
         )
+        # Create portal user for HTTP tests
+        cls.portal_user = mail_new_test_user(
+            cls.env,
+            login="portal",
+            password="portal",
+            name="Portal User",
+            email="portal@example.com",
+            groups="base.group_portal",
+        )
 
 
 @odoo.tests.tagged("post_install", "-at_install")

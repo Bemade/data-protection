@@ -96,7 +96,7 @@ class TestPartnerAnonymize(TransactionCase):
                 "password": "sodasopa",
                 "name": "Sodasopa",
                 "email": "info@sodasopa.com",
-                "groups_id": [(4, cls.env.ref("base.group_user").id)],
+                "group_ids": [(4, cls.env.ref("base.group_user").id)],
             }
         )
 
@@ -107,7 +107,7 @@ class TestPartnerAnonymize(TransactionCase):
                 "password": "eric",
                 "name": "Eric Cartman",
                 "email": "eric@sodasopa.com",
-                "groups_id": [(4, cls.env.ref("base.group_user").id)],
+                "group_ids": [(4, cls.env.ref("base.group_user").id)],
             }
         )
 
@@ -118,7 +118,7 @@ class TestPartnerAnonymize(TransactionCase):
                 "password": "butters",
                 "name": "Butters Stotch",
                 "email": "butters@sodasopa.com",
-                "groups_id": [(4, cls.env.ref("base.group_user").id)],
+                "group_ids": [(4, cls.env.ref("base.group_user").id)],
             }
         )
 
@@ -129,7 +129,7 @@ class TestPartnerAnonymize(TransactionCase):
                 "password": "kenny",
                 "name": "Kenny McCormick",
                 "email": "kenny@sodasopa.com",
-                "groups_id": [(4, cls.env.ref("base.group_user").id)],
+                "group_ids": [(4, cls.env.ref("base.group_user").id)],
             }
         )
 
@@ -140,7 +140,7 @@ class TestPartnerAnonymize(TransactionCase):
                 "password": "stan",
                 "name": "Stanley Marsh",
                 "email": "stan@sp.com",
-                "groups_id": [(4, cls.env.ref("base.group_user").id)],
+                "group_ids": [(4, cls.env.ref("base.group_user").id)],
             }
         )
 
@@ -149,7 +149,7 @@ class TestPartnerAnonymize(TransactionCase):
                 "name": "Test User",
                 "login": "test_user",
                 "email": "test_user@example.com",
-                "groups_id": [
+                "group_ids": [
                     (4, cls.env.ref("base.group_user").id),
                     (4, cls.env.ref("base.group_system").id),
                     (4, cls.env.ref("base.group_partner_manager").id),
@@ -168,7 +168,7 @@ class TestPartnerAnonymize(TransactionCase):
                 "name": "Test User No Rights",
                 "login": "test_user_no_rights",
                 "email": "test_user_no_rights@example.com",
-                "groups_id": [(4, cls.env.ref("base.group_user").id)],
+                "group_ids": [(4, cls.env.ref("base.group_user").id)],
             }
         )
 
