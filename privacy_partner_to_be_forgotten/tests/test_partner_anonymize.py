@@ -229,21 +229,16 @@ class TestPartnerAnonymize(TransactionCase):
         )
         self.assertTrue(re.match(email_pattern, partner.email))
 
-        self.assertFalse(partner.phone)
-        self.assertFalse(partner.mobile)
-        self.assertFalse(partner.street)
-        self.assertFalse(partner.street2)
-        self.assertFalse(partner.city)
-        self.assertFalse(partner.state_id)
-        self.assertFalse(partner.zip)
-        self.assertFalse(partner.country_id)
-        self.assertFalse(partner.function)
-        self.assertFalse(partner.title)
-        self.assertFalse(partner.vat)
-        self.assertFalse(partner.ref)
-        self.assertFalse(partner.comment)
-        self.assertFalse(partner.website)
-        self.assertFalse(partner.image_1920)
+        # Check that anonymized fields are cleared
+        # Only check fields that exist on the model (some are optional)
+        fields_to_check = [
+            "phone", "mobile", "street", "street2", "city", "state_id",
+            "zip", "country_id", "function", "title", "vat", "ref",
+            "comment", "website", "image_1920",
+        ]
+        for field_name in fields_to_check:
+            if field_name in partner._fields:
+                self.assertFalse(partner[field_name], f"Field {field_name} should be cleared")
         self.assertFalse(partner.active)
 
         return True
