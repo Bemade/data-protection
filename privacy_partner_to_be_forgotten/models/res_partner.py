@@ -59,9 +59,11 @@ class ResPartner(models.Model):
                 (format: "xx_dd.mm.yy_id@anonymized.oca")
 
         Returns:
-            dict: Dictionary of fields to update with anonymized or cleared values
+            dict: Dictionary of fields to update with anonymized or cleared values.
+                Only includes fields that exist on the model.
         """
-        return {
+        # Define all fields we want to anonymize
+        all_vals = {
             "name": anonymized_name,
             "email": anonymized_email,
             "phone": False,
@@ -85,6 +87,9 @@ class ResPartner(models.Model):
             "image_128": False,
             "active": False,
         }
+        # Filter to only include fields that exist on the model
+        # This handles optional fields like 'mobile' that may not be installed
+        return {k: v for k, v in all_vals.items() if k in self._fields}
 
     def _prepare_user_anonymized_vals(self, anonymized_email):
         """Prepare values for anonymizing related user accounts.
